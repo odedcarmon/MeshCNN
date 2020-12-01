@@ -33,6 +33,8 @@ class MeshUnion:
         if padding_b > 0:
             padding_b = ConstantPad2d((0, padding_b, 0, 0), 0)
             fe = padding_b(fe)
+        # Using squared average for increased effect of larger weights
+        fe = fe * fe
         return fe
 
     def prepare_groups(self, features, mask):
