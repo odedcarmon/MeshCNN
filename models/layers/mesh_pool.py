@@ -182,8 +182,8 @@ class MeshPool(nn.Module):
         mesh.remove_vertex(vertex[0])
 
     def __build_queue(self, features, edges_count):
-        # delete edges with smallest norm
-        squared_magnitude = torch.sum(features * features, 0)
+        # delete edges with largest norm
+        squared_magnitude = -1 * torch.sum(features * features, 0)
         if squared_magnitude.shape[-1] != 1:
             squared_magnitude = squared_magnitude.unsqueeze(-1)
         edge_ids = torch.arange(edges_count, device=squared_magnitude.device, dtype=torch.float32).unsqueeze(-1)
