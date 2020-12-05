@@ -98,13 +98,13 @@ def define_classifier(input_nc, ncf, ninput_edges, nclasses, opt, gpu_ids, arch,
     norm_layer = get_norm_layer(norm_type=opt.norm, num_groups=opt.num_groups)
 
     if arch == 'mconvnet':
-        net = MeshConvNet(norm_layer, input_nc, ncf, nclasses, ninput_edges, opt.pool_res, opt.fc_n,
+        net = Team1_MeshConvNet(norm_layer, input_nc, ncf, nclasses, ninput_edges, opt.pool_res, opt.fc_n,
                           opt.resblocks)
     elif arch == 'meshunet':
         down_convs = [input_nc] + ncf
         up_convs = ncf[::-1] + [nclasses]
         pool_res = [ninput_edges] + opt.pool_res
-        net = MeshEncoderDecoder(pool_res, down_convs, up_convs, blocks=opt.resblocks,
+        net = Team1MeshEncoderDecoder(pool_res, down_convs, up_convs, blocks=opt.resblocks,
                                  transfer_data=True)
     else:
         raise NotImplementedError('Encoder model name [%s] is not recognized' % arch)
