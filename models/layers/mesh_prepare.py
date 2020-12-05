@@ -3,6 +3,11 @@ import os
 import ntpath
 
 
+def mid_point(mesh, features):
+    for edge_id, edge in enumerate(mesh.edges):
+        features[edge_id].extend(list(mesh.vs[edge[0]] + mesh.vs[edge[1]] / 2))
+
+
 def fill_mesh(mesh2fill, file: str, opt):
     load_path = get_mesh_path(file, opt.num_aug)
     if os.path.exists(load_path):
@@ -313,7 +318,7 @@ def extract_features(mesh):
     set_edge_lengths(mesh, edge_points)
     with np.errstate(divide='raise'):
         try:
-            for extractor in [dihedral_angle, symmetric_opposite_angles, symmetric_ratios]:
+            for extractor in [dihedral_angle, symmetric_opposite_angles, symmetric_ratios, mid_point]:
                 feature = extractor(mesh, edge_points)
                 features.append(feature)
             return np.concatenate(features, axis=0)
