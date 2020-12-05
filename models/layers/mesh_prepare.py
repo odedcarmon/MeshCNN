@@ -3,9 +3,6 @@ import os
 import ntpath
 
 
-def mid_point(mesh, features):
-    for edge_id, edge in enumerate(mesh.edges):
-        features[edge_id].extend(list(mesh.vs[edge[0]] + mesh.vs[edge[1]] / 2))
 
 
 def fill_mesh(mesh2fill, file: str, opt):
@@ -326,6 +323,8 @@ def extract_features(mesh):
             print(e)
             raise ValueError(mesh.filename, 'bad features')
 
+def mid_point(mesh, edge_points):
+    return  list(mesh.vs[edge_points[:,0]] + mesh.vs[edge_points[:,1]] / 2)
 
 def dihedral_angle(mesh, edge_points):
     normals_a = get_normals(mesh, edge_points, 0)
