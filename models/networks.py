@@ -156,6 +156,7 @@ class MeshConvNet(nn.Module):
         x = self.fc2(x)
         return x
 
+
 class Team1_MeshConvNet(nn.Module):
     """Network for learning a global shape descriptor (classification)
     """
@@ -170,7 +171,6 @@ class Team1_MeshConvNet(nn.Module):
             setattr(self, 'conv{}'.format(i), MResConv(ki, self.k[i + 1], nresblocks))
             setattr(self, 'norm{}'.format(i), norm_layer(**norm_args[i]))
             setattr(self, 'pool{}'.format(i), MeshPool(self.res[i + 1]))
-
 
         self.gp = torch.nn.AvgPool1d(self.res[-1])
         # self.gp = torch.nn.MaxPool1d(self.res[-1])
@@ -192,6 +192,7 @@ class Team1_MeshConvNet(nn.Module):
         x = F.LeakyReLU(self.fc2(x))
         x = self.fc3(x)
         return x
+
 
 class MResConv(nn.Module):
     def __init__(self, in_channels, out_channels, skips=1):
@@ -225,9 +226,9 @@ class Team1MeshDecoder(nn.Module):
                 unroll = unrolls[i]
             else:
                 unroll = 0
-            self.up_convs.append(UpConv(convs[i], convs[i + 1], blocks=blocks, unroll=unroll,
+            self.up_convs.append(Team1UpConv(convs[i], convs[i + 1], blocks=blocks, unroll=unroll,
                                         batch_norm=batch_norm, transfer_data=transfer_data))
-        self.final_conv = UpConv(convs[-2], convs[-1], blocks=blocks, unroll=False,
+        self.final_conv = Team1UpConv(convs[-2], convs[-1], blocks=blocks, unroll=False,
                                  batch_norm=batch_norm, transfer_data=False)
         self.up_convs = nn.ModuleList(self.up_convs)
         reset_params(self)
@@ -256,7 +257,7 @@ class Team1MeshEncoder(nn.Module):
                 pool = pools[i + 1]
             else:
                 pool = 0
-            self.convs.append(DownConv(convs[i], convs[i + 1], blocks=blocks, pool=pool))
+            self.convs.append(Team1DownConv(convs[i], convs[i + 1], blocks=blocks, pool=pool))
         self.global_pool = None
         if fcs is not None:
             self.fcs = []
@@ -274,8 +275,8 @@ class Team1MeshEncoder(nn.Module):
             if fcs[0] == last_length:
                 fcs = fcs[1:]
             for length in fcs:
-                self.fcs.append(nn.Linear(last_length, length))
-                self.fcs_bn.append(nn.InstanceNorm1d(length))
+                self.fcs.append(nn.Biinear(last_length, length))
+                self.fcs_bn.append(nn.BatchNorm1d(length))
                 last_length = length
             self.fcs = nn.ModuleList(self.fcs)
             self.fcs_bn = nn.ModuleList(self.fcs_bn)
@@ -316,7 +317,7 @@ class Team1DownConv(nn.Module):
             self.conv2.append(MeshConv(out_channels, out_channels))
             self.conv2 = nn.ModuleList(self.conv2)
         for _ in range(blocks + 1):
-            self.bn.append(nn.InstanceNorm2d(out_channels))
+            self.bn.append(nn.BatchNorm2d(out_channels))
             self.bn = nn.ModuleList(self.bn)
         if pool:
             self.pool = MeshPool(pool)
@@ -365,7 +366,7 @@ class Team1UpConv(nn.Module):
             self.conv2 = nn.ModuleList(self.conv2)
         if batch_norm:
             for _ in range(blocks + 1):
-                self.bn.append(nn.InstanceNorm2d(out_channels))
+                self.bn.append(nn.BatchNorm2d(out_channels))
             self.bn = nn.ModuleList(self.bn)
         if unroll:
             self.unroll = MeshUnpool(unroll)
@@ -391,7 +392,7 @@ class Team1UpConv(nn.Module):
                 x2 = self.bn[idx + 1](x2)
             if self.residual:
                 x2 = x2 + x1
-            x2 = F.relu(x2)
+            x2 = F.leaky_relu(x2)
             x1 = x2
         x2 = x2.squeeze(3)
         return x2
