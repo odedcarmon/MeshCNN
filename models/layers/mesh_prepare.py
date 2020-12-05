@@ -315,7 +315,7 @@ def extract_features(mesh):
     set_edge_lengths(mesh, edge_points)
     with np.errstate(divide='raise'):
         try:
-            for extractor in [dihedral_angle, symmetric_opposite_angles, symmetric_ratios, mid_point]:
+            for extractor in [dihedral_angle, symmetric_opposite_angles, symmetric_ratios]:
                 feature = extractor(mesh, edge_points)
                 features.append(feature)
             return np.concatenate(features, axis=0)
@@ -323,8 +323,8 @@ def extract_features(mesh):
             print(e)
             raise ValueError(mesh.filename, 'bad features')
 
-def mid_point(mesh, edge_points):
-    return  list(mesh.vs[edge_points[:,0]] + mesh.vs[edge_points[:,1]] / 2)
+##def mid_point(mesh, edge_points):
+##    return  list(mesh.vs[edge_points[:,0]] + mesh.vs[edge_points[:,1]] / 2)
 
 def dihedral_angle(mesh, edge_points):
     normals_a = get_normals(mesh, edge_points, 0)
