@@ -4,7 +4,7 @@ from torch.nn import init
 import functools
 from torch.optim import lr_scheduler
 from models.layers.mesh_conv import MeshConv
-import torch.nn as F
+import torch.nn.functional as F
 from models.layers.mesh_pool import MeshPool
 from models.layers.mesh_unpool import MeshUnpool
 
@@ -146,13 +146,13 @@ class MeshConvNet(nn.Module):
 
         for i in range(len(self.k) - 1):
             x = getattr(self, 'conv{}'.format(i))(x, mesh)
-            x = F.ReLU(getattr(self, 'norm{}'.format(i))(x))
+            x = F.relu(getattr(self, 'norm{}'.format(i))(x))
             x = getattr(self, 'pool{}'.format(i))(x, mesh)
 
         x = self.gp(x)
         x = x.view(-1, self.k[-1])
 
-        x = F.ReLU(self.fc1(x))
+        x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return x
 
@@ -182,14 +182,14 @@ class Team1_MeshConvNet(nn.Module):
 
         for i in range(len(self.k) - 1):
             x = getattr(self, 'conv{}'.format(i))(x, mesh)
-            x = F.ReLU(getattr(self, 'norm{}'.format(i))(x))
+            x = F.relu(getattr(self, 'norm{}'.format(i))(x))
             x = getattr(self, 'pool{}'.format(i))(x, mesh)
 
         x = self.gp(x)
         x = x.view(-1, self.k[-1])
 
-        x = F.LeakyReLU(self.fc1(x))
-        x = F.LeakyReLU(self.fc2(x))
+        x = F.leaky_relu(self.fc1(x))
+        x = F.leaky_relu(self.fc2(x))
         x = self.fc3(x)
         return x
 
@@ -210,10 +210,10 @@ class MResConv(nn.Module):
         x = self.conv0(x, mesh)
         x1 = x
         for i in range(self.skips):
-            x = getattr(self, 'bn{}'.format(i + 1))(F.ReLU(x))
+            x = getattr(self, 'bn{}'.format(i + 1))(F.relu(x))
             x = getattr(self, 'conv{}'.format(i + 1))(x, mesh)
         x += x1
-        x = F.ReLU(x)
+        x = F.relu(x)
         return x
 
 
@@ -299,7 +299,7 @@ class Team1MeshEncoder(nn.Module):
                     x = fe.unsqueeze(1)
                     fe = self.fcs_bn[i](x).squeeze(1)
                 if i < len(self.fcs) - 1:
-                    fe = F.LeakyReLU(fe)
+                    fe = F.leaky_relu(fe)
         return fe, encoder_outs
 
     def __call__(self, x):
@@ -330,14 +330,14 @@ class Team1DownConv(nn.Module):
         x1 = self.conv1(fe, meshes)
         if self.bn:
             x1 = self.bn[0](x1)
-        x1 = F.LeakyReLU(x1)
+        x1 = F.leaky_relu(x1)
         x2 = x1
         for idx, conv in enumerate(self.conv2):
             x2 = conv(x1, meshes)
             if self.bn:
                 x2 = self.bn[idx + 1](x2)
             x2 = x2 + x1
-            x2 = F.LeakyReLU(x2)
+            x2 = F.leaky_relu(x2)
             x1 = x2
         x2 = x2.squeeze(3)
         before_pool = None
@@ -384,7 +384,7 @@ class Team1UpConv(nn.Module):
         x1 = self.conv1(x1, meshes)
         if self.bn:
             x1 = self.bn[0](x1)
-        x1 = F.LeakyReLU(x1)
+        x1 = F.leaky_relu(x1)
         x2 = x1
         for idx, conv in enumerate(self.conv2):
             x2 = conv(x1, meshes)
@@ -392,7 +392,7 @@ class Team1UpConv(nn.Module):
                 x2 = self.bn[idx + 1](x2)
             if self.residual:
                 x2 = x2 + x1
-            x2 = F.LeakyReLU(x2)
+            x2 = F.leaky_relu(x2)
             x1 = x2
         x2 = x2.squeeze(3)
         return x2
@@ -462,14 +462,14 @@ class DownConv(nn.Module):
         x1 = self.conv1(fe, meshes)
         if self.bn:
             x1 = self.bn[0](x1)
-        x1 = F.ReLU(x1)
+        x1 = F.relu(x1)
         x2 = x1
         for idx, conv in enumerate(self.conv2):
             x2 = conv(x1, meshes)
             if self.bn:
                 x2 = self.bn[idx + 1](x2)
             x2 = x2 + x1
-            x2 = F.ReLU(x2)
+            x2 = F.relu(x2)
             x1 = x2
         x2 = x2.squeeze(3)
         before_pool = None
@@ -516,7 +516,7 @@ class UpConv(nn.Module):
         x1 = self.conv1(x1, meshes)
         if self.bn:
             x1 = self.bn[0](x1)
-        x1 = F.ReLU(x1)
+        x1 = F.relu(x1)
         x2 = x1
         for idx, conv in enumerate(self.conv2):
             x2 = conv(x1, meshes)
@@ -524,7 +524,7 @@ class UpConv(nn.Module):
                 x2 = self.bn[idx + 1](x2)
             if self.residual:
                 x2 = x2 + x1
-            x2 = F.ReLU(x2)
+            x2 = F.relu(x2)
             x1 = x2
         x2 = x2.squeeze(3)
         return x2
@@ -582,7 +582,7 @@ class MeshEncoder(nn.Module):
                     x = fe.unsqueeze(1)
                     fe = self.fcs_bn[i](x).squeeze(1)
                 if i < len(self.fcs) - 1:
-                    fe = F.ReLU(fe)
+                    fe = F.relu(fe)
         return fe, encoder_outs
 
     def __call__(self, x):
