@@ -162,7 +162,7 @@ class Team1_MeshConvNet(nn.Module):
     """
     def __init__(self, norm_layer, nf0, conv_res, nclasses, input_res, pool_res, fc_n,
                  nresblocks=3):
-        super(MeshConvNet, self).__init__()
+        super(Team1_MeshConvNet, self).__init__()
         self.k = [nf0] + conv_res
         self.res = [input_res] + pool_res
         norm_args = get_norm_args(norm_layer, self.k[1:])
