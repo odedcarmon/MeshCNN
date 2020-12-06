@@ -62,10 +62,10 @@ class MeshConv(nn.Module):
         f = f.permute(0, 3, 1, 2)
 
         # apply the symmetric functions for an equivariant conv
-        x_1 = torch.max(torch.tensor([f[:, :, :, 1], f[:, :, :, 3]]))
-        x_2 = torch.max(torch.tensor([f[:, :, :, 2], f[:, :, :, 4]]))
-        x_3 = torch.min(torch.tensor([f[:, :, :, 1], f[:, :, :, 3]]))
-        x_4 = torch.min(torch.tensor([f[:, :, :, 2], f[:, :, :, 4]]))
+        x_1 = torch.maximum(f[:, :, :, 1], f[:, :, :, 3])
+        x_2 = torch.maximum(f[:, :, :, 2], f[:, :, :, 4])
+        x_3 = torch.minimum(f[:, :, :, 1], f[:, :, :, 3])
+        x_4 = torch.minimum(f[:, :, :, 2], f[:, :, :, 4])
         f = torch.stack([f[:, :, :, 0], x_1, x_2, x_3, x_4], dim=3)
         return f
 
