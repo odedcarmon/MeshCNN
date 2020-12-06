@@ -146,13 +146,13 @@ class MeshConvNet(nn.Module):
 
         for i in range(len(self.k) - 1):
             x = getattr(self, 'conv{}'.format(i))(x, mesh)
-            x = F.ReLu(getattr(self, 'norm{}'.format(i))(x))
+            x = F.ReLU(getattr(self, 'norm{}'.format(i))(x))
             x = getattr(self, 'pool{}'.format(i))(x, mesh)
 
         x = self.gp(x)
         x = x.view(-1, self.k[-1])
 
-        x = F.ReLu(self.fc1(x))
+        x = F.ReLU(self.fc1(x))
         x = self.fc2(x)
         return x
 
@@ -182,7 +182,7 @@ class Team1_MeshConvNet(nn.Module):
 
         for i in range(len(self.k) - 1):
             x = getattr(self, 'conv{}'.format(i))(x, mesh)
-            x = F.ReLu(getattr(self, 'norm{}'.format(i))(x))
+            x = F.ReLU(getattr(self, 'norm{}'.format(i))(x))
             x = getattr(self, 'pool{}'.format(i))(x, mesh)
 
         x = self.gp(x)
@@ -210,10 +210,10 @@ class MResConv(nn.Module):
         x = self.conv0(x, mesh)
         x1 = x
         for i in range(self.skips):
-            x = getattr(self, 'bn{}'.format(i + 1))(F.ReLu(x))
+            x = getattr(self, 'bn{}'.format(i + 1))(F.ReLU(x))
             x = getattr(self, 'conv{}'.format(i + 1))(x, mesh)
         x += x1
-        x = F.ReLu(x)
+        x = F.ReLU(x)
         return x
 
 
@@ -462,14 +462,14 @@ class DownConv(nn.Module):
         x1 = self.conv1(fe, meshes)
         if self.bn:
             x1 = self.bn[0](x1)
-        x1 = F.ReLu(x1)
+        x1 = F.ReLU(x1)
         x2 = x1
         for idx, conv in enumerate(self.conv2):
             x2 = conv(x1, meshes)
             if self.bn:
                 x2 = self.bn[idx + 1](x2)
             x2 = x2 + x1
-            x2 = F.ReLu(x2)
+            x2 = F.ReLU(x2)
             x1 = x2
         x2 = x2.squeeze(3)
         before_pool = None
@@ -516,7 +516,7 @@ class UpConv(nn.Module):
         x1 = self.conv1(x1, meshes)
         if self.bn:
             x1 = self.bn[0](x1)
-        x1 = F.ReLu(x1)
+        x1 = F.ReLU(x1)
         x2 = x1
         for idx, conv in enumerate(self.conv2):
             x2 = conv(x1, meshes)
@@ -524,7 +524,7 @@ class UpConv(nn.Module):
                 x2 = self.bn[idx + 1](x2)
             if self.residual:
                 x2 = x2 + x1
-            x2 = F.ReLu(x2)
+            x2 = F.ReLU(x2)
             x1 = x2
         x2 = x2.squeeze(3)
         return x2
@@ -582,7 +582,7 @@ class MeshEncoder(nn.Module):
                     x = fe.unsqueeze(1)
                     fe = self.fcs_bn[i](x).squeeze(1)
                 if i < len(self.fcs) - 1:
-                    fe = F.ReLu(fe)
+                    fe = F.ReLU(fe)
         return fe, encoder_outs
 
     def __call__(self, x):
