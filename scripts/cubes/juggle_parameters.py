@@ -12,10 +12,13 @@ def newTest(*param):
             outfile.write(line)
 
 if __name__=="__main__":
+    options=["525 450 ",
+             "525 300 ",
+             "450 300 "]
     for i in range(4):
         for j in range(4):
             param=[" ".join([str(2**(i+1+k)) for k in range(2,6)])]
-            param.append("600 "+(("525 ","")[j%2],("450 ","")[j%2])[i%2]+(("375 ","")[(j//2)%2],("300 ","")[(j//2)%2])[(i//2)%2]+"210")
+            param.append("600 "+str((i+1)*(600-405)//5+405)" "+str((j+1)*(405-210)//5+210)+" "+"210")
             run(['chmod','+x','./scripts/cubes/newTest.sh'],check=True)
             newTest(*param)
             #print("Testing with parametrs: --ncf "+param[0]+", --pool_res "+param[1]+":")
