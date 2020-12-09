@@ -15,6 +15,6 @@ if __name__=="__main__":
             param.append("600 "+("450 ","")[j%2]+("300 ","")[(j//2)%2]+"210")
             newTest(*param)
             print("Testing with parametrs: --ncf "+param[0]+", --pool_res "+param[1]+":")
-            run(['bash','newTest.sh'],check=True,text=True)
+            run(['bash','newTest.sh'],check=True)
         
     
