@@ -13,6 +13,7 @@ if __name__=="__main__":
         for j in range(4):
             param=[" ".join([str(2**(i+1+k)) for k in range(2,6)])]
             param.append("600 "+("450 ","")[j%2]+("300 ","")[(j//2)%2]+"210")
+            run(['chmod','+x','newTest.sh'],check=True)
             newTest(*param)
             print("Testing with parametrs: --ncf "+param[0]+", --pool_res "+param[1]+":")
             run(['bash','newTest.sh'],check=True)
