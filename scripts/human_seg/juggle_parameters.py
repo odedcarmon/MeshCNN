@@ -13,7 +13,7 @@ if __name__=="__main__":
     for i in range(4):
         for j in range(4):
             param=[" ".join([str(2**(i+1+k)) for k in range(2,6)])]
-            param.append("1800 "+str((4*i+j+1)*(1800-600)+600)+" 600")
+            param.append("1800 "+str((4*i+j+1)*(1800-600)//17+600)+" 600")
             newTest(*param)
             run(['chmod','+x','./scripts/human_seg/newTest.sh'],check=True)
             #print("Testing with parametrs: --ncf "+param[0]+", --pool_res "+param[1]+":")
