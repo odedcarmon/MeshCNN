@@ -19,8 +19,8 @@ if __name__=="__main__":
         for j in range(4):
             param=[" ".join([str(2**(i+1+k)) for k in range(2,6)])]
             param.append("600 "+str((i+1)*(600-405)//5+405)" "+str((j+1)*(405-210)//5+210)+" "+"210")
-            run(['chmod','+x','./scripts/cubes/newTest.sh'],check=True)
             newTest(*param)
+            run(['chmod','+x','./scripts/cubes/newTest.sh'],check=True)
             #print("Testing with parametrs: --ncf "+param[0]+", --pool_res "+param[1]+":")
             print("Testing with parametrs: --pool_res "+param[1]+":")
             run(['bash','./scripts/cubes/newTest.sh'],check=True)
