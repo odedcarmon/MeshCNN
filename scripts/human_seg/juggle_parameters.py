@@ -14,8 +14,8 @@ if __name__=="__main__":
         for j in range(4):
             param=[" ".join([str(2**(i+1+k)) for k in range(2,6)])]
             param.append("1800 "+("1560 ","")[i%2]+("1320 ","")[j%2]+("1080 ","")[(i//2)%2]+("840 ","")[(j//2)%2]+"600")
-            run(['chmod','+x','./scripts/human_seg/newTest.sh'],check=True)
             newTest(*param)
+            run(['chmod','+x','./scripts/human_seg/newTest.sh'],check=True)
             #print("Testing with parametrs: --ncf "+param[0]+", --pool_res "+param[1]+":")
             print("Testing with parametrs: --pool_res "+param[1]+":")
             run(['bash','./scripts/human_seg/newTest.sh'],check=True)
