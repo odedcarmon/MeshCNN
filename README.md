@@ -12,12 +12,16 @@
 <img src="/docs/imgs/hw1/cubes_test_acc.png" height="150px"/> 
 
 Logarithmic: 
+
+
 <img src="/docs/imgs/hw1/cubes_test_acc_logarithmic.png" height="150px"/> 
 
 ### Train loss
 <img src="/docs/imgs/hw1/cubes_train_loss.png" height="150px"/> 
 
 Logarithmic: 
+
+
 <img src="/docs/imgs/hw1/cubes_train_loss_logarithmic.png" height="150px"/> 
 
 
@@ -45,12 +49,16 @@ The following are plots of pooling results for 4 different configurations:
 <img src="/docs/imgs/hw1/cubes_test_acc.png" height="150px"/> 
 
 Logarithmic: 
+
+
 <img src="/docs/imgs/hw1/cubes_test_acc_logarithmic.png" height="150px"/> 
 
 ### Train loss
 <img src="/docs/imgs/hw1/cubes_train_loss.png" height="150px"/> 
 
 Logarithmic: 
+
+
 <img src="/docs/imgs/hw1/cubes_train_loss_logarithmic.png" height="150px"/> 
 
 
