@@ -46,24 +46,24 @@ The following are plots of pooling results for 4 different configurations:
  
 # Human (Segmentation)
 ### Test accuracy
-<img src="/docs/imgs/hw1/cubes_test_acc.png" height="150px"/> 
+<img src="/docs/imgs/hw1/human_seg_test_acc.png" height="150px"/> 
 
 Logarithmic: 
 
 
-<img src="/docs/imgs/hw1/cubes_test_acc_logarithmic.png" height="150px"/> 
+<img src="/docs/imgs/hw1/human_seg_acc_logarithmic.png" height="150px"/> 
 
 ### Train loss
-<img src="/docs/imgs/hw1/cubes_train_loss.png" height="150px"/> 
+<img src="/docs/imgs/hw1/human_seg_train_loss.png" height="150px"/> 
 
 Logarithmic: 
 
 
-<img src="/docs/imgs/hw1/cubes_train_loss_logarithmic.png" height="150px"/> 
+<img src="/docs/imgs/hw1/human_seg_train_loss_logarithmic.png" height="150px"/> 
 
 
  ```text
-In the case of segmentation we see that our modifications has created major damage to the accuracy and loss.
+In the case of segmentation we see that our modifications have created major damage to the accuracy and loss.
 Not much improvement can be said to have happened during training and the final accuracy results are rather poor.
 ```
 
