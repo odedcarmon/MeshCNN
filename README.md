@@ -51,7 +51,7 @@ The following are plots of pooling results for 4 different configurations:
 Logarithmic: 
 
 
-<img src="/docs/imgs/hw1/human_seg_acc_logarithmic.png" height="150px"/> 
+<img src="/docs/imgs/hw1/human_seg_test_acc_logarithmic.png" height="150px"/> 
 
 ### Train loss
 <img src="/docs/imgs/hw1/human_seg_train_loss.png" height="150px"/> 
