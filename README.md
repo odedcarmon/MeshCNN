@@ -1,98 +1,66 @@
 <img src='docs/imgs/alien.gif' align="right" width=325>
 <br><br><br>
 
-# MeshCNN in PyTorch
+# MeshCNN modification - ML Workshop Home Work
 
 
-### SIGGRAPH 2019 [[Paper]](https://bit.ly/meshcnn) [[Project Page]](https://ranahanocka.github.io/MeshCNN/)<br>
+### Team 1 - Oded Carmon, Wisam  Hathot, Yotam Even Nir.
 
-MeshCNN is a general-purpose deep neural network for 3D triangular meshes, which can be used for tasks such as 3D shape classification or segmentation. This framework includes convolution, pooling and unpooling layers which are applied directly on the mesh edges.
 
-<img src="docs/imgs/meshcnn_overview.png" align="center" width="750px"> <br>
+# Cubes (Classification)
+### Test accuracy
+<img src="/docs/imgs/hw1/cubes_test_acc.png" height="150px"/> 
 
-The code was written by [Rana Hanocka](https://www.cs.tau.ac.il/~hanocka/) and [Amir Hertz](http://pxcm.org/) with support from [Noa Fish](http://www.cs.tau.ac.il/~noafish/).
+Logarithmic: 
+<img src="/docs/imgs/hw1/cubes_test_acc_logarithmic.png" height="150px"/> 
 
-# Getting Started
+### Train loss
+<img src="/docs/imgs/hw1/cubes_train_loss.png" height="150px"/> 
 
-### Installation
-- Clone this repo:
-```bash
-git clone https://github.com/ranahanocka/MeshCNN.git
-cd MeshCNN
-```
-- Install dependencies: [PyTorch](https://pytorch.org/) version 1.2. <i> Optional </i>: [tensorboardX](https://github.com/lanpa/tensorboardX) for training plots.
-  - Via new conda environment `conda env create -f environment.yml` (creates an environment called meshcnn)
-  
-### 3D Shape Classification on SHREC
-Download the dataset
-```bash
-bash ./scripts/shrec/get_data.sh
-```
+Logarithmic: 
+<img src="/docs/imgs/hw1/cubes_train_loss_logarithmic.png" height="150px"/> 
 
-Run training (if using conda env first activate env e.g. ```source activate meshcnn```)
-```bash
-bash ./scripts/shrec/train.sh
+
+ ```text
+We can see that our modifications to the code have proven to do damage to the high accuracy of the original MeshCNN.
+Our choice of parameters, criteria for collapsing edges and other choices we've made, are less optimistic than those
+chosen in the original MeshCNN.
+But we can see that the accuracy improves during training.
 ```
 
-To view the training loss plots, in another terminal run ```tensorboard --logdir runs``` and click [http://localhost:6006](http://localhost:6006).
+### Pooling
+The following are plots of pooling results for 4 different configurations:
 
-Run test and export the intermediate pooled meshes:
-```bash
-bash ./scripts/shrec/test.sh
+  - --pool_res 600 444 249 210
+ <img src="/docs/imgs/hw1/pool_res_444.png" height="150px"/> 
+  - --pool_res 600 450 300 210
+ <img src="/docs/imgs/hw1/pool_res_450.png" height="150px"/> 
+  - --pool_res 600 483 366 210
+ <img src="/docs/imgs/hw1/pool_res_483.png" height="150px"/> 
+  - --pool_res 600 561 366 210
+ <img src="/docs/imgs/hw1/pool_res_561.png" height="150px"/> 
+ 
+# Human (Segmentation)
+### Test accuracy
+<img src="/docs/imgs/hw1/cubes_test_acc.png" height="150px"/> 
+
+Logarithmic: 
+<img src="/docs/imgs/hw1/cubes_test_acc_logarithmic.png" height="150px"/> 
+
+### Train loss
+<img src="/docs/imgs/hw1/cubes_train_loss.png" height="150px"/> 
+
+Logarithmic: 
+<img src="/docs/imgs/hw1/cubes_train_loss_logarithmic.png" height="150px"/> 
+
+
+ ```text
+In the case of segmentation we see that our modifications has created major damage to the accuracy and loss.
+Not much improvement can be said to have happened during training and the final accuracy results are rather poor.
 ```
 
-Visualize the network-learned edge collapses:
-```bash
-bash ./scripts/shrec/view.sh
-```
+### Visualization
+<img src="/docs/imgs/hw1/segmentation.png" height="150px"/>
 
-An example of collapses for a mesh:
-
-<img src="/docs/imgs/T252.png" width="450px"/> 
-
-Note, you can also get pre-trained weights using bash ```./scripts/shrec/get_pretrained.sh```. 
-
-In order to use the pre-trained weights, run ```train.sh``` which will compute and save the mean / standard deviation of the training data. 
-
-
-### 3D Shape Segmentation on Humans
-The same as above, to download the dataset / run train / get pretrained / run test / view
-```bash
-bash ./scripts/human_seg/get_data.sh
-bash ./scripts/human_seg/train.sh
-bash ./scripts/human_seg/get_pretrained.sh
-bash ./scripts/human_seg/test.sh
-bash ./scripts/human_seg/view.sh
-```
-
-Some segmentation result examples:
-
-<img src="/docs/imgs/shrec__10_0.png" height="150px"/> <img src="/docs/imgs/shrec__14_0.png" height="150px"/> <img src="/docs/imgs/shrec__2_0.png" height="150px"/> 
-
-### Additional Datasets
-The same scripts also exist for COSEG segmentation in ```scripts/coseg_seg``` and cubes classification in ```scripts/cubes```. 
-
-# More Info
-Check out the [MeshCNN wiki](https://github.com/ranahanocka/MeshCNN/wiki) for more details. Specifically, see info on [segmentation](https://github.com/ranahanocka/MeshCNN/wiki/Segmentation) and [data processing](https://github.com/ranahanocka/MeshCNN/wiki/Data-Processing).
-
-# Citation
-If you find this code useful, please consider citing our paper
-```
-@article{hanocka2019meshcnn,
-  title={MeshCNN: A Network with an Edge},
-  author={Hanocka, Rana and Hertz, Amir and Fish, Noa and Giryes, Raja and Fleishman, Shachar and Cohen-Or, Daniel},
-  journal={ACM Transactions on Graphics (TOG)},
-  volume={38},
-  number={4},
-  pages = {90:1--90:12},
-  year={2019},
-  publisher={ACM}
-}
-```
-
-
-# Questions / Issues
-If you have questions or issues running this code, please open an issue so we can know to fix it.
-  
 # Acknowledgments
-This code design was adopted from [pytorch-CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix).
+Our instructor in this course is Rana Hanocka (Tel Aviv University), co-creator of MeshCNN.
